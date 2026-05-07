@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "path": "c:/Users/JorgeLuizPereiraBisp/OneDrive - Math Group/Documentos/Visual Studio Code/FormulaOne"
+    }
+  ],
+  "settings": {
+    "eslint.workingDirectories": [
+      "c:/Users/JorgeLuizPereiraBisp/OneDrive - Math Group/Documentos/Visual Studio Code/FormulaOne"
+    ],
+    "eslint.validate": [
+      "javascript",
+      "typescript"
+    ],
+    "eslint.options": {
+      "overrideConfigFile": "c:\\Users\\JorgeLuizPereiraBisp\\OneDrive - Math Group\\Documentos\\Visual Studio Code\\FormulaOne\\.eslintrc.json"
+    }
+  }
+}
