@@ -1,0 +1,24 @@
+:host {
+    display: block;
+}
+
+/* Ajustes no botão de busca (lupa) */
+.slds-float_right lightning-button-icon {
+    margin-top: 10px;
+}
+
+/* Espaçamento entre campos de endereço */
+lightning-input {
+    margin-bottom: 0.75rem;
+}
+
+/* Ajuste no container geral */
+.slds-p-around_medium {
+    background-color: #fefefe;
+    border-radius: 0.5rem;
+}
+
+/* Mensagem de erro */
+.slds-text-color_error {
+    font-weight: 600;
+}
