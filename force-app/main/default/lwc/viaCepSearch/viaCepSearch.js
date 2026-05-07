@@ -17,6 +17,10 @@ export default class ViaCepSearch extends LightningElement {
         this.cep = event.detail.value;
     }
 
+    handleNumberChange(event) {
+        this.numero = event.detail.value;
+    }
+
     handleSearchCep() {
         this.erro = null;
         //this.endereco = null;
@@ -74,7 +78,8 @@ export default class ViaCepSearch extends LightningElement {
 
         atualizarEnderecoConta({
             contaId: this.recordId,
-            enderecoJson: JSON.stringify(this.endereco)
+            enderecoJson: JSON.stringify(this.endereco),
+            numero: this.numero
         })
         .then(() => {
             const evt = new ShowToastEvent({

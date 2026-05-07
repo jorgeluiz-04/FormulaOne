@@ -30,13 +30,19 @@ public with sharing class CepServiceController {
     }
 
     @AuraEnabled
-    public static void atualizarEnderecoConta(Id contaId, String enderecoJson) {
+    public static void atualizarEnderecoConta(Id contaId, String enderecoJson, String numero) {
         try{
             
         ViaCepResponseWrapper endereco = (ViaCepResponseWrapper) JSON.deserialize(enderecoJson, ViaCepResponseWrapper.class);
 
+        String fullAddress = endereco.logradouro;
+
+        if(String.isNotBlank(numero)){
+            fullAddress += ', ' + numero;
+        }
+
         Account acc = [SELECT Id, BillingStreet, BillingCity, BillingState, BillingPostalCode, BillingCountry FROM Account WHERE Id = :contaId LIMIT 1];
-        acc.BillingStreet = endereco.logradouro;
+        acc.BillingStreet = fullAddress;
         acc.BillingCity = endereco.localidade;
         acc.BillingState = endereco.estado;
         acc.BillingPostalCode = endereco.cep;

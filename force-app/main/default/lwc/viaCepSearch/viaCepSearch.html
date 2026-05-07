@@ -22,8 +22,11 @@
 
             <!-- Campos sempre visíveis -->
             <lightning-layout multiple-rows class="slds-m-top_medium">
-                <lightning-layout-item size="12" class="slds-p-right_small">
+                <lightning-layout-item size="9" class="slds-p-right_small">
                     <lightning-input label="Rua" value={endereco.logradouro} disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="3">
+                    <lightning-input label="Número" value={numero} onchange={handleNumberChange} type="text" max-length="10">></lightning-input>
                 </lightning-layout-item>
                 <lightning-layout-item size="6" class="slds-p-right_small">
                     <lightning-input label="Bairro" value={endereco.bairro} disabled></lightning-input>
