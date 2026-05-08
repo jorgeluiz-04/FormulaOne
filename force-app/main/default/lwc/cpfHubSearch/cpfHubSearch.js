@@ -13,10 +13,8 @@ extends LightningElement {
 
         let value = event.target.value;
 
-        // Remove tudo que não for número
         value = value.replace(/\D/g, '');
-
-        // Máscara CPF
+        
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
 
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
@@ -71,5 +69,15 @@ extends LightningElement {
                 variant
             })
         );
+    }
+
+    /* Método ainda não utilizado, mas que no futuro possar utilizado*/
+    get cpfMascarado() {
+
+        if(!this.dados?.cpf) {
+            return '';
+        }
+
+        return this.dados.cpf.replace(/(\d{3})\d{6}(\d{2})/, '$1.***.***-$2');
     }
 }

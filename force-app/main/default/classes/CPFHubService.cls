@@ -10,6 +10,7 @@ public with sharing class CPFHubService {
     public static CPFHubResponse consultarCPF(String cpf) {
 
         cpf = cpf.replaceAll('[^0-9]', '');
+        System.debug('Consultando CPF: ' + mascararCPF(cpf));
 
         HttpRequest req = new HttpRequest();
 
@@ -50,5 +51,20 @@ public with sharing class CPFHubService {
         }
 
         return response;
+    }
+
+    private static String mascararCPF(String cpf) {
+
+        if(String.isBlank(cpf)) {
+            return '';
+        }
+
+        cpf = cpf.replaceAll('[^0-9]', '');
+
+        if(cpf.length() != 11) {
+            return 'CPF inválido';
+        }
+
+        return cpf.substring(0, 3) + '.***.***-' + cpf.substring(9, 11);
     }
 }
