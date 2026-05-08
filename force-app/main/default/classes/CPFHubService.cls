@@ -1,0 +1,54 @@
+/**
+ * @description       : 
+ * @aauthor           : Jorge Luiz (jorge.luiz@nfsmw.com)
+ * @group             : 
+ * @last modified on  : 05-08-2026
+ * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+**/
+public with sharing class CPFHubService {
+
+    public static CPFHubResponse consultarCPF(String cpf) {
+
+        cpf = cpf.replaceAll('[^0-9]', '');
+
+        HttpRequest req = new HttpRequest();
+
+        req.setEndpoint('callout:CPFHub/cpf/' + cpf);
+        req.setMethod('GET');
+        req.setHeader('Accept', 'application/json');
+        req.setTimeout(20000);
+
+        Http http = new Http();
+
+        HttpResponse res;
+
+        try {
+            res = http.send(req);
+        } catch(Exception ex) {
+            throw new AuraHandledException('Erro de comunicação com a API CPFHub: ' + ex.getMessage());
+        }
+
+        CPFHubResponse response;
+
+        try {
+            response = (CPFHubResponse) JSON.deserialize(res.getBody(), CPFHubResponse.class);
+        } catch(Exception ex) {
+            throw new AuraHandledException('Erro ao interpretar resposta da API.');
+        }
+
+        System.debug('Status Code: ' + res.getStatusCode());
+        
+        // Tratamento de erro funcional OU HTTP
+        if(res.getStatusCode() != 200 || response.success == false) {
+            String mensagemErro = 'Erro ao consultar CPF.';
+
+            if(response != null && response.error != null && !String.isBlank(response.error.message)) {
+                mensagemErro = response.error.message;
+            }
+
+            throw new AuraHandledException(mensagemErro + mascararCPF(cpf));
+        }
+
+        return response;
+    }
+}

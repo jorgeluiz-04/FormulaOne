@@ -1,0 +1,43 @@
+<!--
+  @description       : 
+  @author            : Jorge Luiz
+  @group             : 
+  @last modified on  : 05-08-2026
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-card title="Consulta CPF" icon-name="utility:salesforce1">
+        <div class="slds-p-around_medium">
+            <lightning-input label="CPF" placeholder="Digite seu CPF..." maxlength="14" value={cpf} onchange={handleCpfChange}></lightning-input>
+
+            <lightning-button label="Consultar" variant="brand" onclick={consultar} disabled={loading} class="slds-m-top_medium"> </lightning-button>
+
+            <!-- Spinner -->
+            <template if:true={loading}>
+                <div class="slds-is-relative slds-m-top_medium">
+                    <lightning-spinner alternative-text="Consultando" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Dados -->
+            <template if:true={dados}>
+                <div class="slds-box slds-m-top_medium">
+                    <p>
+                        <strong>Nome:</strong>
+                        {dados.name}
+                    </p>
+
+                    <p>
+                        <strong>Data Nascimento:</strong>
+                        {dados.birthDate}
+                    </p>
+
+                    <p>
+                        <strong>Gênero:</strong>
+                        {dados.gender}
+                    </p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
