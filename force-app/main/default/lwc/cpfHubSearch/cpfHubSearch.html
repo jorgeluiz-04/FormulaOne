@@ -2,7 +2,7 @@
   @description       : 
   @author            : Jorge Luiz
   @group             : 
-  @last modified on  : 05-08-2026
+  @last modified on  : 05-12-2026
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -10,7 +10,7 @@
         <div class="slds-p-around_medium">
             <lightning-input label="CPF" placeholder="Digite seu CPF..." maxlength="14" value={cpf} onchange={handleCpfChange}></lightning-input>
 
-            <lightning-button label="Consultar" variant="brand" onclick={consultar} disabled={loading} class="slds-m-top_medium"> </lightning-button>
+            <lightning-button label="Consultar" variant="brand" onclick={checkingCPF} disabled={loading} class="slds-m-top_medium"> </lightning-button>
 
             <!-- Spinner -->
             <template if:true={loading}>
@@ -23,23 +23,20 @@
             <template if:true={dados}>
                 <div class="slds-box slds-m-top_medium">
                     <p>
-                        <strong>Nome:</strong>
+                        <strong>CPF: </strong>
+                        {cpfMask}
+                    </p>
+                    <p>
+                        <strong>Nome Completo: </strong>
                         {dados.name}
                     </p>
-
-                    <!-- <p>
-                        <strong>CPF:</strong>
-                        {cpfMascarado}
-                    </p>-->
-                    
                     <p>
-                        <strong>Data Nascimento:</strong>
+                        <strong>Data de Nascimento: </strong>
                         {dados.birthDate}
                     </p>
-
                     <p>
-                        <strong>Gênero:</strong>
-                        {dados.gender}
+                        <strong>Gênero: </strong>
+                        {genderFormatted}
                     </p>
                 </div>
             </template>

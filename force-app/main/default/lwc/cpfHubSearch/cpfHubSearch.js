@@ -1,5 +1,5 @@
 import { LightningElement, track } from 'lwc';
-import consultarCPF from '@salesforce/apex/CPFHubController.buscarCPF';
+import checkCPF from '@salesforce/apex/CPFHubController.searchCPF';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class CpfConsultation
@@ -14,26 +14,36 @@ extends LightningElement {
         let value = event.target.value;
 
         value = value.replace(/\D/g, '');
-        
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
-
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
-
         value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 
         this.cpf = value;
     }
 
-    async consultar() {
+    async checkingCPF() {
+        const cpfLimpo = this.cpf.replace(/\D/g, '');
+
+        if (cpfLimpo.length !== 11) {
+            this.showToast(
+                'Erro',
+                'Informe um CPF válido.',
+                'error'
+            );
+
+            return;
+        }
 
         this.loading = true;
         this.dados = null;
 
         try {
-            const response = await consultarCPF({cpf: this.cpf});
+            const response = await checkCPF({cpf: this.cpf});
 
             this.dados = response.data;
 
+            this.cpf = '';
+            
             this.showToast(
                 'Sucesso',
                 'CPF consultado com sucesso.',
@@ -41,7 +51,6 @@ extends LightningElement {
             );
 
         } catch(error) {
-
             let mensagem = 'Erro ao consultar CPF.';
 
             if(error && error.body && error.body.message) {
@@ -60,8 +69,41 @@ extends LightningElement {
         }
     }
 
-    showToast(title, message, variant) {
+    get cpfMask() {
+        const cpf = this.dados?.cpf;
 
+        if (!cpf) {
+            return '';
+        }
+
+        const cpfLimpo = cpf.replace(/\D/g, '');
+
+        if (cpfLimpo.length !== 11) {
+            return '';
+        }
+
+        return cpfLimpo.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,'$1.***.***-$4');
+    }
+
+    get genderFormatted() {
+        const genero = this.dados?.gender?.toUpperCase();
+
+        if(!genero) {
+            return '';
+        }
+
+        if(genero === 'M') {
+            return 'Masculino';
+        }
+
+        if(genero === 'F') {
+            return 'Feminino';
+        }
+
+        return genero;
+    }
+
+    showToast(title, message, variant) {
         this.dispatchEvent(
             new ShowToastEvent({
                 title,
@@ -69,15 +111,5 @@ extends LightningElement {
                 variant
             })
         );
-    }
-
-    /* Método ainda não utilizado, mas que no futuro possar utilizado*/
-    get cpfMascarado() {
-
-        if(!this.dados?.cpf) {
-            return '';
-        }
-
-        return this.dados.cpf.replace(/(\d{3})\d{6}(\d{2})/, '$1.***.***-$2');
     }
 }

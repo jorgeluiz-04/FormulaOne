@@ -2,15 +2,15 @@
  * @description       : 
  * @aauthor           : Jorge Luiz (jorge.luiz@nfsmw.com)
  * @group             : 
- * @last modified on  : 05-08-2026
+ * @last modified on  : 05-12-2026
  * @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 **/
 public with sharing class CPFHubService {
 
-    public static CPFHubResponse consultarCPF(String cpf) {
+    public static CPFHubResponse checkCPF(String cpf) {
 
         cpf = cpf.replaceAll('[^0-9]', '');
-        System.debug('Consultando CPF: ' + mascararCPF(cpf));
+        System.debug('Consultando CPF: ' + maskingCPF(cpf));
 
         HttpRequest req = new HttpRequest();
 
@@ -40,20 +40,20 @@ public with sharing class CPFHubService {
         System.debug('Status Code: ' + res.getStatusCode());
         
         // Tratamento de erro funcional OU HTTP
-        if(res.getStatusCode() != 200 || response.success == false) {
+        if(res.getStatusCode() != 200 || response == null || response.success == false) {
             String mensagemErro = 'Erro ao consultar CPF.';
 
             if(response != null && response.error != null && !String.isBlank(response.error.message)) {
                 mensagemErro = response.error.message;
             }
 
-            throw new AuraHandledException(mensagemErro + mascararCPF(cpf));
+            throw new AuraHandledException(mensagemErro + ' - CPF: ' + maskingCPF(cpf));
         }
 
         return response;
     }
 
-    private static String mascararCPF(String cpf) {
+    private static String maskingCPF(String cpf) {
 
         if(String.isBlank(cpf)) {
             return '';
