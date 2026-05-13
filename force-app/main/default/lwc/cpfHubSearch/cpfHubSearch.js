@@ -42,6 +42,8 @@ extends LightningElement {
 
             this.dados = response.data;
 
+            console.log('JSON Response:', this.dados);
+
             this.cpf = '';
             
             this.showToast(
@@ -62,6 +64,10 @@ extends LightningElement {
                 mensagem,
                 'error'
             );
+
+            this.cpf = '';
+
+            console.log('Erro:', error);
         }
 
         finally {
